@@ -1,0 +1,11 @@
+// TODO - Backend - Buttons
+//For E-Mails maybe use Nodemailer its an npm package.
+
+// TODO - Backend - Pages
+//Use Chakra to display a toast after an email or angebot has been sent!
+
+// TODO - Post Deployment
+//Re-View everything!
+
+// TODO - After Deployment
+//Remove the address and Arbeitszeit, put Mihaela's plan and address.
