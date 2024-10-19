@@ -1,4 +1,4 @@
-import {NextRequest} from "next/server";
+import {NextRequest, NextResponse } from "next/server";
 import { transporter, mailOptions } from "../../config/nodemailer";
 
 const CONTACT_MESSAGE_FIELDS = {
@@ -25,7 +25,7 @@ const generateEmailContent = (data) => {
     };
 };
 
-export async function POST(req: NextRequest, NextResponse){
+export async function POST(req: NextRequest, res: NextResponse){
     const response = {
         success: 'Form submitted successfully'
       };
