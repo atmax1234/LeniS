@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Leaf, Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
 
-import placeholder from "../../img/placeholder.svg";
 import galleryid1 from "../../img/galleryid1.webp";
 import galleryid2 from "../../img/galleryid2.webp";
 import galleryid3 from "../../img/galleryid3.webp";

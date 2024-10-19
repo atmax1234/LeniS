@@ -4,7 +4,6 @@ import Link from "next/link"
 import Image from "next/image"
 import { Leaf, Menu, X, ChevronDown } from "lucide-react"
 
-import placeholder from "../../img/placeholder.svg"
 import gartenpflege from "../../img/Gartenpflege.png"
 import treppenhausreinigung from "../../img/treppenhausreinigung.png"
 import winterdienst from "../../img/winterdienst.png"

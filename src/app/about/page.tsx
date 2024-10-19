@@ -5,12 +5,10 @@ import Image from "next/image"
 import { Leaf, Menu, X, ChevronDown, Users, Sparkles, Target } from "lucide-react"
 
 import lenislogo from "../../img/LeniS Logo.png"
-import placeholder from "../../img/placeholder.svg"
 
 export default function AboutPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [activeValue, setActiveValue] = useState(null)
-
+  const [activeValue, setActiveValue] = useState<number | null>(null);
   const companyValues = [
     {
       icon: <Users className="h-6 w-6 text-green-600" />,

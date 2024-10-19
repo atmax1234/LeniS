@@ -1,4 +1,4 @@
-import {NextResponse, NextRequest} from "next/server";
+import {NextRequest} from "next/server";
 import { transporter, mailOptions } from "../../config/nodemailer";
 
 const CONTACT_MESSAGE_FIELDS = {
@@ -8,7 +8,7 @@ const CONTACT_MESSAGE_FIELDS = {
     message: "Message",
 };
 
-export const generateEmailContent = (data) => {
+const generateEmailContent = (data) => {
     const stringData = Object.entries(data).reduce(
         (str, [key, val]) =>
           (str += `${CONTACT_MESSAGE_FIELDS[key]}: \n${val} \n \n`),
@@ -25,7 +25,7 @@ export const generateEmailContent = (data) => {
     };
 };
 
-export async function POST(req: NextRequest, res: NextResponse){
+export async function POST(req: NextRequest, NextResponse){
     const response = {
         success: 'Form submitted successfully'
       };
