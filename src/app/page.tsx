@@ -1,10 +1,14 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Leaf, Menu } from "lucide-react";
+import { Leaf, Menu, X } from "lucide-react";
 import heroimg from "../img/heroimage.png";
 
 export default function LandingPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header Section */}
@@ -23,6 +27,7 @@ export default function LandingPage() {
               <button
                 type="button"
                 className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500"
+                onClick={() => setMobileMenuOpen(true)}
               >
                 <span className="sr-only">Menü öffnen</span>
                 <Menu className="h-6 w-6" aria-hidden="true" />
@@ -63,6 +68,71 @@ export default function LandingPage() {
           </div>
         </div>
       </header>
+
+      {/* Mobile menu */}
+      <div
+        className={`${
+          mobileMenuOpen ? "fixed inset-0 z-40 overflow-y-auto" : "hidden"
+        } md:hidden`}
+      >
+        <div
+          className="fixed inset-0 bg-black bg-opacity-25"
+          aria-hidden="true"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+        <nav className="fixed top-0 right-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white shadow-xl overflow-y-scroll">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center">
+              <Leaf className="h-8 w-8 text-green-500" />
+              <span className="ml-2 text-xl font-bold text-gray-800">
+                LeniS
+              </span>
+            </Link>
+            <button
+              type="button"
+              className="rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <span className="sr-only">Menü schließen</span>
+              <X className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
+          <div className="mt-6">
+            <div className="pt-2 pb-4 space-y-1">
+              <Link
+                href="/"
+                className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:text-green-500 hover:bg-gray-50"
+              >
+                Startseite
+              </Link>
+              <Link
+                href="/services"
+                className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:text-green-500 hover:bg-gray-50"
+              >
+                Dienstleistungen
+              </Link>
+              <Link
+                href="/about"
+                className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:text-green-500 hover:bg-gray-50"
+              >
+                Über uns
+              </Link>
+              <Link
+                href="/gallery"
+                className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:text-green-500 hover:bg-gray-50"
+              >
+                Galerie
+              </Link>
+              <Link
+                href="/contact"
+                className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:text-green-500 hover:bg-gray-50"
+              >
+                Kontakt
+              </Link>
+            </div>
+          </div>
+        </nav>
+      </div>
 
       {/* Hero Section */}
       <div className="relative bg-white overflow-hidden">
