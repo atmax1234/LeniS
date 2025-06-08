@@ -1,8 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react"; // Added useEffect, useRef
 import Link from "next/link";
 import Image from "next/image";
-import { Leaf, Menu, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Header from "../components/Header";
 
 import galleryid1 from "../../img/galleryid1.webp";
 import galleryid2 from "../../img/galleryid2.webp";
@@ -87,11 +88,13 @@ const projects = [
 ];
 
 export default function GalleryPage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const lastFocusedElementRef = useRef<HTMLElement | null>(null);
 
   const openModal = (project) => {
+    lastFocusedElementRef.current = document.activeElement as HTMLElement;
     setCurrentImage(project);
     setModalOpen(true);
   };
@@ -99,7 +102,50 @@ export default function GalleryPage() {
   const closeModal = () => {
     setModalOpen(false);
     setCurrentImage(null);
+    if (lastFocusedElementRef.current) {
+      lastFocusedElementRef.current.focus();
+    }
   };
+
+  useEffect(() => {
+    if (modalOpen && modalRef.current) {
+      const focusableElements = modalRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusableElements.length > 0) {
+        focusableElements[0].focus();
+      }
+
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+          closeModal();
+          return;
+        }
+        if (event.key === "Tab") {
+          if (focusableElements.length === 0) return;
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+
+          if (event.shiftKey) {
+            if (document.activeElement === firstElement) {
+              lastElement.focus();
+              event.preventDefault();
+            }
+          } else {
+            if (document.activeElement === lastElement) {
+              firstElement.focus();
+              event.preventDefault();
+            }
+          }
+        }
+      };
+
+      document.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    }
+  }, [modalOpen]);
 
   const nextImage = () => {
     const currentIndex = projects.findIndex((p) => p.id === currentImage.id);
@@ -115,128 +161,7 @@ export default function GalleryPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header Section */}
-      <header className="bg-white shadow-sm">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4 md:justify-start md:space-x-10">
-            <div className="flex justify-start lg:w-0 lg:flex-1">
-              <Link href="/" className="flex items-center">
-                <Leaf className="h-8 w-8 text-green-500" />
-                <span className="ml-2 text-xl font-bold text-gray-800">
-                  LeniS
-                </span>
-              </Link>
-            </div>
-            <div className="-mr-2 -my-2 md:hidden">
-              <button
-                type="button"
-                className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500"
-                onClick={() => setMobileMenuOpen(true)}
-              >
-                <span className="sr-only">Menü öffnen</span>
-                <Menu className="h-6 w-6" aria-hidden="true" />
-              </button>
-            </div>
-            <nav className="hidden md:flex space-x-10">
-              <Link
-                href="/"
-                className="text-base font-medium text-gray-700 hover:text-green-500"
-              >
-                Startseite
-              </Link>
-              <Link
-                href="/services"
-                className="text-base font-medium text-gray-700 hover:text-green-500"
-              >
-                Dienstleistungen
-              </Link>
-              <Link
-                href="/about"
-                className="text-base font-medium text-gray-700 hover:text-green-500"
-              >
-                Über uns
-              </Link>
-              <Link
-                href="/gallery"
-                className="text-base font-medium text-gray-700 hover:text-green-500"
-              >
-                Galerie
-              </Link>
-              <Link
-                href="/contact"
-                className="text-base font-medium text-gray-700 hover:text-green-500"
-              >
-                Kontakt
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile menu */}
-      <div
-        className={`${
-          mobileMenuOpen ? "fixed inset-0 z-40 overflow-y-auto" : "hidden"
-        } md:hidden`}
-      >
-        <div
-          className="fixed inset-0 bg-black bg-opacity-25"
-          aria-hidden="true"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-        <nav className="fixed top-0 right-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white shadow-xl overflow-y-scroll">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center">
-              <Leaf className="h-8 w-8 text-green-500" />
-              <span className="ml-2 text-xl font-bold text-gray-800">
-                LeniS
-              </span>
-            </Link>
-            <button
-              type="button"
-              className="rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <span className="sr-only">Close menu</span>
-              <X className="h-6 w-6" aria-hidden="true" />
-            </button>
-          </div>
-          <div className="mt-6">
-            <div className="pt-2 pb-4 space-y-1">
-              <Link
-                href="/"
-                className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:text-green-500 hover:bg-gray-50"
-              >
-                Startseite
-              </Link>
-              <Link
-                href="/services"
-                className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:text-green-500 hover:bg-gray-50"
-              >
-                Dienstleistungen
-              </Link>
-              <Link
-                href="/about"
-                className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:text-green-500 hover:bg-gray-50"
-              >
-                Über uns
-              </Link>
-              <Link
-                href="/gallery"
-                className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:text-green-500 hover:bg-gray-50"
-              >
-                Galerie
-              </Link>
-              <Link
-                href="/contact"
-                className="block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:text-green-500 hover:bg-gray-50"
-              >
-                Kontakt
-              </Link>
-            </div>
-          </div>
-        </nav>
-      </div>
+      <Header /> {/* Use the Header component */}
 
       {/* Gallery Content */}
       <main className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
@@ -259,11 +184,13 @@ export default function GalleryPage() {
             >
               <div className="flex-shrink-0 relative group">
                 <Image
-                  className="h-48 w-full object-cover"
+                  // className="h-48 w-full object-cover" // Removed to allow natural aspect ratio
                   src={project.image}
                   alt={project.title}
-                  width={800}
-                  height={600}
+                  // width={800} // Removed to use intrinsic width
+                  // height={600} // Removed to use intrinsic height
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Added sizes prop
+                  style={{ width: '100%', height: 'auto', objectFit: 'cover', aspectRatio: '4/3' }} // Maintain aspect ratio, cover container
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-300 flex items-center justify-center">
                   <p className="text-white text-center px-4 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -290,6 +217,7 @@ export default function GalleryPage() {
     aria-labelledby="modal-title"
     role="dialog"
     aria-modal="true"
+    ref={modalRef} // Add ref to modal container
   >
     <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
       {/* Overlay (background) */}
@@ -333,12 +261,13 @@ export default function GalleryPage() {
               {/* Increased max width and height for larger image display */}
               <Image
                 src={currentImage.image}
-                alt={currentImage.title}
-                width={currentImage.width} // Replace with actual image width if known
-                height={currentImage.height} // Replace with actual image height if known
-                style={{objectFit:"contain"}} // Ensures the image keeps its aspect ratio
+                alt={currentImage.title} // Use project title as alt text
+                style={{objectFit:"contain", width: '100%', height: 'auto', maxHeight: '80vh'}} // Ensures the image keeps its aspect ratio and fits modal
                 className="rounded-lg"
-                unoptimized // If you want to avoid Next.js optimization for higher quality
+                // unoptimized // Removed to enable Next.js optimization
+                // width={800} // Removed to use intrinsic width
+                // height={600} // Removed to use intrinsic height
+                sizes=" (max-width: 1024px) 90vw, 800px" // Added sizes for modal
               />
             </div>
           </div>
