@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import heroimg from "../img/heroimage.png";
-import Header from "../components/Header"; // Import the Header component
+import Header from "./components/Header"; // Import the Header component
 
 export default function LandingPage() {
   return (
