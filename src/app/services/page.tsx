@@ -4,6 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { ChevronDown } from "lucide-react" // Removed Leaf, Menu, X
 import Header from "../components/Header"; // Import the Header component
+import Footer from "../components/Footer";
 
 import gartenpflege from "../../img/Gartenpflege.png"
 import treppenhausreinigung from "../../img/treppenhausreinigung.png"
@@ -82,13 +83,7 @@ export default function Services() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white">
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 md:flex md:items-center md:justify-between lg:px-8">
-          <div className="mt-8 md:mt-0 md:order-1">
-            <p className="text-center text-base text-gray-400">&copy; 2024 LeniS, Alle Rechte vorbehalten.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }

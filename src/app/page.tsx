@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import heroimg from "../img/heroimage.png";
 import Header from "./components/Header"; // Import the Header component
+import Footer from "./components/Footer";
 
 export default function LandingPage() {
   return (
@@ -168,6 +169,7 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
