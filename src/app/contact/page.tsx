@@ -152,11 +152,11 @@ export default function ContactPage() {
               </div>
               <div className="flex items-center">
                 <MapPin className="h-6 w-6 text-green-500 mr-2" />
-                <span className="text-gray-600 font-semibold">123 Cleaning St, City, State 12345</span>
+                <span className="text-gray-600 font-semibold">Ahornweg 22, 25436 Uetersen</span>
               </div>
               <div className="flex items-center">
                 <Clock className="h-6 w-6 text-green-500 mr-2" />
-                <span className="text-gray-600 font-semibold">Mon-Fri: 8am-6pm, Sat: 9am-4pm</span>
+                <span className="text-gray-600 font-semibold">Mo-Fr: 17:00-18:00 Uhr, Sa: 10:00-16:00 Uhr</span>
               </div>
             </div>
 
